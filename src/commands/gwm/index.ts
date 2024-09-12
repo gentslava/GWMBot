@@ -10,7 +10,7 @@ const sendMessage = async (
   ctx: Context,
   message: string,
   keyboard: ReplyKeyboardMarkup
-) => ctx.reply(message, {
+) => ctx.sendMessage(message, {
   reply_markup: keyboard,
 });
 
