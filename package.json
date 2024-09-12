@@ -13,7 +13,7 @@
   "devDependencies": {
     "@types/debug": "^4.1.12",
     "@types/node": "^22.5.4",
-    "@zeit/ncc": "^0.22.3",
+    "@vercel/ncc": "^0.38.1",
     "debug": "^4.3.7",
     "nodemon": "^3.1.4",
     "prettier": "^3.3.3",
