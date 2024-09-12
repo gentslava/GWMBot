@@ -9,7 +9,7 @@ const about = (ctx: Context) => {
   const message = `*${name} ${version}*\n${author}\n${homepage}`;
   debug(`Вызвана "about" команда с сообщением \n${message}`);
 
-  return ctx.replyWithMarkdown(message);
+  return ctx.sendMessage(message, {parse_mode: 'Markdown'});
 };
 
 export default about;
