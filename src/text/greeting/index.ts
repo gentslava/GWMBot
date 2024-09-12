@@ -1,22 +1,24 @@
 import { Context } from 'telegraf';
 import createDebug from 'debug';
+import { User } from '@telegraf/types';
 
 const debug = createDebug('bot:greeting_textas');
 
-const replyToMessage = (ctx: Context, messageId: number, string: string) =>
-  ctx.reply(string, {
-    reply_to_message_id: messageId,
-  });
+const replyToMessage = (ctx: Context, string: string) => ctx.reply(string);
 
-const greeting = () => (ctx: Context) => {
-  debug('Triggered "greeting" text command');
+const greeting = (ctx: Context) => {
+  debug('Вызвана "greeting" текстовая команда');
 
-  const messageId = ctx.message?.message_id;
-  const userName = `${ctx.message?.from.first_name} ${ctx.message?.from.last_name}`;
+  const { message } = ctx;
+  debug(message);
+  if (!message) return;
 
-  if (messageId) {
-    replyToMessage(ctx, messageId, `Hello, ${userName}!`);
-  }
+  const user: User | undefined = message.from;
+  let userName: string = 'Аноним';
+  if (user?.first_name) userName = user.first_name;
+  if (user?.last_name) userName = `${userName} ${user.last_name}`;
+
+  replyToMessage(ctx, `Привет, ${userName}!`);
 };
 
 export default greeting;

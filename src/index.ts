@@ -1,4 +1,6 @@
 import { Telegraf } from 'telegraf';
+import { useNewReplies } from "telegraf/future";
+import { message } from 'telegraf/filters';
 import createDebug from 'debug';
 
 import { about } from './commands';
@@ -13,11 +15,11 @@ const PORT = (process.env.PORT && parseInt(process.env.PORT, 10)) || 3000;
 const WEBHOOK_URL = `${process.env.WEBHOOK_URL}/bot${BOT_TOKEN}`;
 
 const bot = new Telegraf(BOT_TOKEN);
+bot.use(useNewReplies());
 
-bot.command('about', about()).on('text', greeting());
-
-bot.command('about', about());
-bot.command('text', greeting());
+bot.command('about', about);
+bot.command('text', greeting);
+bot.on(message('text'), greeting);
 
 const production = () => {
   debug('Bot runs in production mode');

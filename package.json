@@ -6,11 +6,13 @@
   "author": "Vyacheslav Scherbinin",
   "homepage": "https://github.com/gentslava/GWMBot",
   "dependencies": {
+    "@telegraf/entity": "^0.5.0",
     "dotenv-cli": "^7.4.2",
     "express": "^4.21.0",
     "telegraf": "^4.16.3"
   },
   "devDependencies": {
+    "@telegraf/types": "^7.1.0",
     "@types/debug": "^4.1.12",
     "@types/node": "^22.5.4",
     "@vercel/ncc": "^0.38.1",
