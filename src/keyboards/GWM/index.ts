@@ -1,15 +1,13 @@
-import { Context, Markup } from 'telegraf';
+import { Markup } from 'telegraf';
 import createDebug from 'debug';
+import { ReplyKeyboardMarkup } from '@telegraf/types';
 
 const debug = createDebug('bot:GWM_keyboards');
 
-const GWM = async (ctx: Context) => {
+const GWM = (): ReplyKeyboardMarkup => {
   debug('Вызвана "GWMKeyboard" клавиатура');
 
-  const { message } = ctx;
-  if (!message) return;
-
-  const keyboard = Markup
+  return Markup
     .keyboard([
       ['ℹ️ Инструкция по установке'],
       ['💻 Прошивка Lite Premium v1.0.0'],
@@ -18,12 +16,8 @@ const GWM = async (ctx: Context) => {
     ])
     .oneTime()
     .resize()
+    .reply_markup
   ;
-
-  ctx.sendMessage(
-		"Выберите один из вариантов 👇🏻",
-		keyboard,
-	);
 };
 
 export default GWM;

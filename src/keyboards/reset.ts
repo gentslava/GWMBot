@@ -6,11 +6,11 @@ const debug = createDebug('bot:reset_keyboards');
 const reset = async (ctx: Context) => {
   debug('Вызвана "reset" клавиатура');
 
-  ctx.setChatMenuButton({
+  await ctx.setChatMenuButton({
 		type: "commands",
 	});
 
-  ctx.sendMessage(
+  await ctx.sendMessage(
 		"Привет! Для продолжения введи команду",
 		Markup
       .removeKeyboard(),

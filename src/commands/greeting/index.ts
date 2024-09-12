@@ -4,6 +4,11 @@ import { User } from '@telegraf/types';
 
 const debug = createDebug('bot:greeting_textas');
 
+const sendMessage = async (
+  ctx: Context,
+  message: string,
+) => ctx.sendMessage(message);
+
 const greeting = (ctx: Context) => {
   debug('Вызвана "greeting" текстовая команда');
 
@@ -15,7 +20,7 @@ const greeting = (ctx: Context) => {
   if (user?.first_name) userName = user.first_name;
   if (user?.last_name) userName = `${userName} ${user.last_name}`;
 
-  return ctx.reply(`Привет, ${userName}!`);
+  return sendMessage(ctx, `Привет, ${userName}!`);
 };
 
 export default greeting;

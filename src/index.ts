@@ -3,9 +3,8 @@ import { useNewReplies } from "telegraf/future";
 import { message } from 'telegraf/filters';
 import createDebug from 'debug';
 
-import { about } from './commands';
+import { schema } from './commands';
 import { greeting } from './text';
-import { GWMKeyboard, resetKeyboards } from './keyboards';
 
 const debug = createDebug('bot');
 
@@ -18,42 +17,34 @@ const WEBHOOK_URL = `${process.env.WEBHOOK_URL}/bot${BOT_TOKEN}`;
 const bot = new Telegraf(BOT_TOKEN);
 bot.use(useNewReplies());
 
-bot.command('start', resetKeyboards);
+bot.telegram.setMyCommands(
+  schema.map(
+    ({ command, description }) => ({ command, description })
+  )
+);
 
-bot.telegram.setMyCommands([
-  {
-    command: 'greeting',
-    description: '👋🏻 Команда приветствия'
-  },
-  {
-    command: 'gwm',
-    description: '💻 Прошивки ГУ'
-  },
-  {
-    command: 'about',
-    description: 'ℹ️ О боте'
-  },
-]);
-
-bot.command('about', about);
-bot.command('greeting', greeting);
-bot.command('gwm', GWMKeyboard);
+schema.forEach(
+  ({ command, callback }) => bot.command(command, callback)
+);
 bot.on(message('text'), greeting);
 
 const production = () => {
   debug('Bot runs in production mode');
-  // debug(`${USERNAME} setting webhook: ${WEBHOOK_URL}`);
-  // bot.telegram.setWebhook(WEBHOOK_URL);
-  // debug(`${USERNAME} starting webhook on port: ${PORT}`);
+  debug(`${USERNAME} setting webhook: ${WEBHOOK_URL}`);
+  bot.telegram.setWebhook(WEBHOOK_URL);
+  debug(`${USERNAME} starting webhook on port: ${PORT}`);
   // bot.telegram.startWebhook(`/bot${BOT_TOKEN}`, null, PORT);
 };
 
 const development = () => {
   debug('Bot runs in development mode');
-  // debug(`${USERNAME} deleting webhook`);
-  // bot.telegram.deleteWebhook();
+  debug(`${USERNAME} deleting webhook`);
+  bot.telegram.deleteWebhook();
   debug(`${USERNAME} starting polling`);
   bot.launch();
+
+  process.once('SIGINT', () => bot.stop('SIGINT'));
+  process.once('SIGTERM', () => bot.stop('SIGTERM'));
 };
 
 ENVIRONMENT === 'production' ? production() : development();

@@ -1,1 +1,1 @@
-export { default as about } from './about';
+export { default as schema } from './schema';
